@@ -27,25 +27,28 @@ var path = {
 		js: "build/js/",
 		css: "build/css/",
 		img: "build/img/",
-		fonts: "build/fonts/"
+		fonts: "build/fonts/",
+		sounds: "build/sounds/"
 	},
 	production: {				// Указываем куда перемещать готовые после сборки файлы (production)
 		html: "production/",
 		js: "production/js/",
 		css: "production/css/",
 		img: "production/img/",
-		fonts: "production/fonts/"
+		fonts: "production/fonts/",
+		sounds: "build/sounds/"
 	},
 	src: {						// Указываем пути откуда брать исходники
-		html: "src/index.pug",
-		// html: "src/**/*.pug",
+		htmlpug: "src/index.pug",
+		html: "src/*.html",
 		js: "src/js/*.js",
 		style: "src/style/main.scss",
 		img: "src/img/**/*.*",
 		fonts: "src/fonts/**/*.*"
 	},
 	watch: {					// Указываем за изменением каких файлов наблюдать
-		html: "src/**/*.pug",
+		htmlpug: "src/**/*.pug",
+		html: "src/**/*.html",
 		js: "src/js/**/*.js",
 		style: "src/style/**/*.scss",
 		img: "src/img/**/*.*",
@@ -56,9 +59,9 @@ var path = {
 		production: "production/*"
 	},
 	copy: {
+		sounds: "src/sounds/*.wav"
 		// js: "node_modules/jquery/dist/jquery.min.js",
 		// json: "src/manifest/*.json"
-		html: "src/*.html"
 		// css: "node_modules/bootstrap/dist/css/bootstrap.min.css"
 	}
 };
@@ -83,12 +86,23 @@ var prodconf = {
 
 // Создаем задание скопировать js и css
 gulp.task("copy", function () {
-	return gulp.src(path.copy.html)
-		.pipe(gulpIf(isDevelopment, gulp.dest(path.build.html), gulp.dest(path.production.html)))
+	return gulp.src(path.copy.sounds)
+		// .pipe(gulpIf(isDevelopment, gulp.dest(path.build.html), gulp.dest(path.production.html)))
 		// .pipe(gulp.src(path.copy.css))
 		// .pipe(gulpIf(isDevelopment, gulp.dest(path.build.css), gulp.dest(path.production.css)))
 		// .pipe(gulp.src(path.copy.json))
-		// .pipe(gulpIf(isDevelopment, gulp.dest(path.build.html), gulp.dest(path.production.html)))
+		.pipe(gulpIf(isDevelopment, gulp.dest(path.build.sounds), gulp.dest(path.production.sounds)))
+		.pipe(bs.stream());
+});
+
+// Создаем задание собрать HTML из PUG
+gulp.task("html:build:pug", function () {
+	return gulp.src(path.src.htmlpug)
+		.pipe(plumber())
+		.pipe(pug({
+			pretty: true
+		}))
+		.pipe(gulpIf(isDevelopment, gulp.dest(path.build.html), gulp.dest(path.production.html)))
 		.pipe(bs.stream());
 });
 
@@ -96,9 +110,6 @@ gulp.task("copy", function () {
 gulp.task("html:build", function () {
 	return gulp.src(path.src.html)
 		.pipe(plumber())
-		.pipe(pug({
-			pretty: true
-		}))
 		.pipe(gulpIf(isDevelopment, gulp.dest(path.build.html), gulp.dest(path.production.html)))
 		.pipe(bs.stream());
 });
@@ -150,7 +161,7 @@ gulp.task("fonts:build", function() {
 });
 
 // Создаем задание для всей сборки
-gulp.task("build", gulp.parallel("copy", "js:build", "style:build", "img:build", "fonts:build"));
+gulp.task("build", gulp.parallel("copy", "html:build", "js:build", "style:build", "img:build", "fonts:build"));
 
 // Создаем задание для очистки папки build
 gulp.task("build:clean", function () {
