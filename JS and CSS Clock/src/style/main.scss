@@ -22,7 +22,7 @@ body {
 	margin: 50px auto;
 	position: relative;
 	padding: 2rem;
-	box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1), inset 0 0 0 3px #EFEFEF, inset 0 0 10px black, 0 0 10px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1), inset 0 0 0 3px #EFEFEF, inset 0 0 10px black, 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .clock-face {
@@ -34,18 +34,24 @@ body {
 
 .hand {
 	width: 50%;
-	height: 6px;
-	background-color: black;
+	background-color: rgba(#333333, 0.8);
 	position: absolute;
 	top: 50%;
 	transform-origin: 100%;
 	transform: rotate(90deg);
 	transition: all 0.05s;
 	transition-timing-function: ease-in-out;
+	border-radius: 4px;
 }
 
 .hour-hand {
-	height: 10px;
-	background-color: #FF6F4B;
-	border-radius: 4px;
+	height: 12px;
+}
+
+.min-hand {
+	height: 8px;
+}
+
+.second-hand {
+	height: 4px;
 }
