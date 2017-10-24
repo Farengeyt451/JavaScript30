@@ -1,7 +1,16 @@
 :root {
-	--base: #ffc600;
+	--base: #FFC600;
 	--spacing: 10px;
 	--blur: 10px;
+}
+
+body {
+	text-align: center;
+	background: #193549;
+	color: white;
+	font-family: sans-serif;
+	font-weight: 100;
+	font-size: 50px;
 }
 
 img {
@@ -14,17 +23,10 @@ img {
 	color: var(--base);
 }
 
-body {
-	text-align: center;
-	background: #193549;
-	color: white;
-	font-family: sans-serif;
-	font-weight: 100;
-	font-size: 50px;
-}
 .controls {
 	margin-bottom: 50px;
 }
+
 input {
 	width:100px;
 }
